@@ -84,7 +84,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="register-section">
-            <h2>Registro</h2>
+            <h2>Datos Personales</h2>
             <form id="registrationForm" method="POST" action="/register">
               <div class="textbox">
                   <input type="text" name="name" placeholder="Nombre y apellido" id="name" required>
@@ -98,20 +98,51 @@
             <div class="textbox">
               <input type="dpi" name="dpi" placeholder="Numero de DPI" id="dpi" required>
             </div>
-            <div class="textbox">
-              <input type="dir" name="dir" placeholder="Dereccion" id="dir" required>
-            </div>
               <div class="textbox">
                   <input type="password" name="password" placeholder="Contraseña" id="password" required>
               </div>
               <div class="textbox">
                   <input type="password" name="confirmPassword" placeholder="Confirmar contraseña" id="confirmPassword" required>
               </div>
-              <input type="submit" class="btn" value="Registrarse">
-          </form>
+            </form>
+          
           </div>
         </div>
-        <div class="col-md-6">
+
+<div class="col-md-6">
+    <div class="login-options">
+        <div class="login-options">
+          <div class="register-section">
+            <h2>Datos de la Empresa</h2>
+              <form id="registrationForm" method="POST" action="/register">
+                <div class="textbox">
+                  <input type="text" name="name" placeholder="Nombre del comercio" id="name" required>
+                </div>
+                <div class="textbox">
+                  <input type="telefono" name="telefono" placeholder="Telefono" id="telefono" required>
+                </div>
+                <div class="textbox">
+                  <input type="direccion" name="direccion" placeholder="Direccion comercial" id="direccion" required>
+                </div>
+                <div class="textbox">
+                  <input type="patente" name="patente" placeholder="Patente de Comercio" id="password" required>
+                </div>
+                <div class="textbox">
+                  <input type="nit" name="nit" placeholder="No. de NIT" id="nit" required>
+                </div>
+                <div class="textbox">
+                  <input type="des" name="des" placeholder="Descripción del negocio" id="des" required>
+                </div>
+              </form> 
+            </div>
+          </div>
+          <input type="submit" class="btn centered" value="Registrarse">
+  
+        </div>
+</div>    
+
+
+        <!--<div class="col-md-6">
           <div class="login-options">
             <div class="login-options">
                 <h3>Opciones de inicio de sesión</h3>
@@ -127,7 +158,7 @@
               </div>
               
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- Fin de la sección de registro -->
