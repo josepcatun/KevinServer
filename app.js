@@ -2,13 +2,12 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
-const sql = require('mssql');  // Asegúrate de haber instalado este módulo con npm
+const sql = require('mssql'); 
 const db = require('./config/database');
 
-// Intenta conectar a la base de datos al iniciar la aplicación
 db.getConnection().catch(err => {
     console.error("Error al conectar a la base de datos:", err);
-    process.exit(1);  // Termina la aplicación si no puede conectarse a la base de datos
+    process.exit(1); 
 });
 
 http.createServer((req, res) => {
@@ -26,39 +25,69 @@ http.createServer((req, res) => {
         '/register'
     ];
 
-    if (req.method === 'POST' && req.url === '/register') {
+    if (req.method === 'POST') {
         let body = '';
-        
+
         req.on('data', chunk => {
             body += chunk.toString();
         });
 
         req.on('end', async () => {
             const postData = querystring.parse(body);
-            console.log("Datos recibidos del formulario:", postData);
 
-            // Inserta postData en tu base de datos
-            const query = `
-                INSERT INTO Usuario (Nombre, Email, Contraseña) 
-                VALUES (@Nombre, @Email, @Contraseña);
-            `;
+            if (req.url === '/register') {
+                // Código para el registro
+                const query = `
+                    INSERT INTO Usuario (Nombre, Email, Contraseña) 
+                    VALUES (@Nombre, @Email, @Contraseña);
+                `;
 
-            try {
-                const pool = await db.getConnection();
-                const request = pool.request();
-                request.input('Nombre', sql.NVarChar, postData.name);
-                request.input('Email', sql.NVarChar, postData.email);
-                request.input('Contraseña', sql.NVarChar, postData.password);
+                try {
+                    const pool = await db.getConnection();
+                    const request = pool.request();
+                    request.input('Nombre', sql.NVarChar, postData.name);
+                    request.input('Email', sql.NVarChar, postData.email);
+                    request.input('Contraseña', sql.NVarChar, postData.password);
 
-                await request.query(query);
+                    await request.query(query);
 
-                res.writeHead(200, { 'Content-Type': 'text/plain' });
-                res.end('Registro exitoso!');
-            } catch (error) {
-                console.error("Error al insertar en la base de datos:", error);
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Error interno del servidor');
+                    res.writeHead(200, { 'Content-Type': 'text/plain' });
+                    res.end('Registro exitoso!');
+                } catch (error) {
+                    console.error("Error al insertar en la base de datos:", error);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Error interno del servidor');
+                }
+
+            } 
+            
+            else if (req.url === '/login') {
+                try {
+                    const pool = await db.getConnection();
+                    const request = pool.request();
+                    request.input('Email', sql.NVarChar, postData.email);
+                    request.input('Contraseña', sql.NVarChar, postData.password);
+
+                    const result = await request.query(`
+                        SELECT * 
+                        FROM Usuario 
+                        WHERE Email = @Email AND Contraseña = @Contraseña
+                    `);
+
+                    if (result.recordset.length > 0) {
+                        res.writeHead(200, { 'Content-Type': 'text/plain' });
+                        res.end('Autenticación exitosa!');
+                    } else {
+                        res.writeHead(401, { 'Content-Type': 'text/plain' });
+                        res.end('Correo o contraseña incorrectos');
+                    }
+                } catch (error) {
+                    console.error("Error al consultar en la base de datos:", error);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Error interno del servidor');
+                }
             }
+
         });
 
     } else if (htmlPages.includes(req.url) || req.url.endsWith('.html')) {
