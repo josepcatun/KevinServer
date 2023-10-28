@@ -946,3 +946,34 @@ a:focus {
 .search-button:hover {
   background-color: #0056b3;  /* Color más oscuro en hover */
 }
+
+/* search box for the restaurants */
+.search-box {
+  position: relative;
+  top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box input {
+  padding: 10px;
+  padding-right: 35px;
+  width: 45%;
+  border-radius: 5px 0 0 5px;
+  border: 1px solid #5B7DCF;
+  outline: none;
+}
+
+.search-box button {
+  background-color:#FF9800;
+  padding: 10px 15px;
+  position: relative;
+  border: 0;
+  right: 0;
+  bottom: 0; 
+  right: 0;
+  border-radius: 0 5px 5px 0;
+  color:#00004E;
+  cursor: pointer;
+}
+/* end search box for the restaurants */
